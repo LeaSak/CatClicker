@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+
+</html>
+
+<body>
+    <style>
+    /** {
+        border: 2px solid black;
+    }*/
+
+    *,
+    *:before,
+    *:after {
+        box-sizing: inherit;
+    }
+
+    html {
+        box-sizing: border-box;
+    }
+
+    body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 960px;
+        margin: 0 auto;
+    }
+
+    .grid-row::before,
+    .grid-row::after {
+        display: table;
+        content: " ";
+        clear: both;
+    }
+
+    .col {
+        width: 100%;
+        padding: 15px;
+    }
+    .cat{
+        max-width: 100%;
+    }
+    .title{
+        text-align: center;
+    }
+    .tally{
+        text-align: center;
+        font-size: 18px;
+    }
+
+    @media only screen and (min-width: 800px) {
+        .col {
+            width: 50%;
+            float: left;
+        }
+    }
+    </style>
+    <!-- Photo by Miguel Angel Ruíz Sánchez on Unsplash -->
+    <div class="container">
+        <div class="grid-row">
+            <div class="col" id="left">
+            </div>
+            <div class="col" id="right">
+            </div>
+        </div>
+        <!-- <img class="cat" id="feline" src="images/cat.jpg" alt="">
+        <div class="tally" id="clickCounter"></div> -->
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="app.js"></script>
+</body>
