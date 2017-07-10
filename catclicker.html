@@ -2,7 +2,7 @@
 <html>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta ="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
 
 </html>
@@ -29,7 +29,13 @@
         margin: 0;
         padding: 0;
     }
-
+    ul{
+        list-style-type: none;
+        padding: 0;
+    }
+    a{
+        text-decoration: none;
+    }
     .container {
         max-width: 960px;
         margin: 0 auto;
@@ -56,25 +62,35 @@
         text-align: center;
         font-size: 18px;
     }
+    .center{
+        text-align: center;
+    }
 
     @media only screen and (min-width: 800px) {
-        .col {
+        /*.col {
             width: 50%;
             float: left;
-        }
+        }*/
     }
     </style>
-    <!-- Photo by Miguel Angel Ruíz Sánchez on Unsplash -->
     <div class="container">
         <div class="grid-row">
-            <div class="col" id="left">
-            </div>
-            <div class="col" id="right">
+            <div class="col center">
+                <h1>Cat Clicker</h1>
             </div>
         </div>
-        <!-- <img class="cat" id="feline" src="images/cat.jpg" alt="">
-        <div class="tally" id="clickCounter"></div> -->
+        <div class="grid-row">
+            <div class="col center">
+            <h2>Pick your cat by name:</h2>
+                <ul id="cat-list">
+                </ul>
+            </div>
+        </div>
+        <div class="grid-row">
+            <div class="col" id="cat-box">
+            </div>
+        </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script> -->
     <script src="app.js"></script>
 </body>
