@@ -5,8 +5,6 @@ var Cat = function(name, sprite) {
     this.sprite = sprite;
     this.counter = 0;
     this.catLinkID = this.name + 'Link';
-    this.imageID = this.name + 'Image';
-    this.counterId = this.name + "Counter";
     this.catBtnId = this.name + "Btn";
     this.saveBtnId = this.name + "SaveBtn";
 };
@@ -20,7 +18,7 @@ var ginger = new Cat('ginger', 'images/ginger.jpg');
 /* ======= Model ======= */
 
 var model = {
-    //currentCat: null,
+    currentCat: null,
     cats: [fluffy, ginger]
 };
 
@@ -30,20 +28,21 @@ var octopus = {
     getCats: function() {
         return model.cats;
     },
-    // getCurrentCat: function(){
-    //     return model.currentCat;
-    // },
-    // setCurrentCat: function(cat){
-    //     model.currentCat = cat;
-    // },
+    getCurrentCat: function(){
+        return model.currentCat;
+    },
+    setCurrentCat: function(cat){
+        model.currentCat = cat;
+    },
     capitalizeFirstLetter: function(cat) {
         var lowercaseString = cat.name.slice(1);
         var firstLetter = cat.name.charAt(0).toUpperCase();
         cat.title = firstLetter + lowercaseString;
         return cat.title;
     },
-    incrementCounter: function(cat) {
-        cat.counter++;
+    incrementCounter: function() {
+        model.currentCat.counter++;
+        catProfileView.render(model.currentCat);
     },
     init: function() {
         catListView.init();
@@ -86,15 +85,11 @@ var catListView = {
             for (var i = 0; i < this.cats.length; i++) {
                 var cat = this.cats[i];
                 if (cat.catLinkID === e.target.id) {
-                    //octopus.setCurrentCat(cat);
-                    catProfileView.renderTitle(cat);
-                    catProfileView.renderImage(cat);
-                    catProfileView.renderClicks(cat);
+                    octopus.setCurrentCat(cat);
+                    catProfileView.render(cat);
                     catAdminView.renderAdminButton(cat);
-                    //console.log(cat.name + " inside Loop ");
                 }
             }
-            //console.log(model.currentCat);
             catAdminView.hideCatForm();
             e.preventDefault();
             }
@@ -113,30 +108,17 @@ var catListView = {
              * Render Profile Functions
              * Title, Image and Total Clicks
              */
-
-            renderTitle: function(cat) {
+             render: function(cat){
                 octopus.capitalizeFirstLetter(cat);
                 this.catTitle.textContent = 'Meet ' + cat.title;
-            },
-            renderImage: function(cat) {
-                this.catImage.id = cat.imageID;
                 this.catImage.src = cat.sprite;
-            },
-            renderClicks: function(cat) {
-                this.catCounter.id = cat.counterId;
                 this.catCounter.textContent = "Clicks: " + cat.counter;
-            },
+             },
             // Update Total Clicks for cat if ID matches
             incrementCounterOnClick: function() {
                 this.catBox.addEventListener('click', function(e) {
-                    for (var i = 0; i < catListView.cats.length; i++) {
-                        var cat = catListView.cats[i];
-                        if (cat.imageID === e.target.id) {
-                            octopus.incrementCounter(cat);
-                             document.getElementById(cat.counterId).textContent = "Clicks: " + cat.counter;
-                             catAdminView.catClicks.value = cat.counter;
-                        }
-                    }
+                    octopus.getCurrentCat();
+                    octopus.incrementCounter();
                     e.preventDefault();
                 });
             }
@@ -158,57 +140,28 @@ var catListView = {
                 this.cancel();
             },
             renderAdminButton: function(cat){
-                this.catAdminBtn.id = cat.catBtnId;
                 this.catAdminBtn.style.display= 'block';
             },
             hideCatForm: function(){
                 this.catForm.style.display = 'none';
             },
             showCatForm: function(e){
-                for (var i = 0; i < catListView.cats.length; i++){
-                    var cat = catListView.cats[i];
-                    if(cat.catBtnId === e.target.id){
-                        octopus.capitalizeFirstLetter(cat);
-                        this.catNameFormElem.value = cat.title;
-                        this.catURLFormElem.value = cat.sprite;
-                        this.catClicks.value = cat.counter;
-                        this.saveBtn.id = cat.saveBtnId;
-                        this.catForm.style.display = 'block';
-                    }
-                }
+                this.catNameFormElem.value = model.currentCat.title;
+                this.catURLFormElem.value = model.currentCat.sprite;
+                this.catClicks.value = model.currentCat.counter;
+                this.catForm.style.display = 'block';
                 e.preventDefault();
             },
             updateProfile: function(e){
-                for (var i = 0; i < catListView.cats.length; i++){
-                    var cat = catListView.cats[i];
-                    if(cat.saveBtnId === e.target.id){
-                        //get form values
-                        cat.name = this.catNameFormElem.value.toLowerCase();
-                        cat.sprite = this.catURLFormElem.value;
-                        cat.counter = this.catClicks.value;
-                        // redefine cat properties
-                        cat.catLinkID = cat.name + 'Link';
-                        cat.imageID = cat.name + 'Image';
-                        cat.counterId = cat.name + "Counter";
-                        cat.catBtnId = cat.name + "Btn";
-                        cat.saveBtnId = cat.name + "SaveBtn";
-                        // update cat links
+                        //set cat properties to form values
+                        model.currentCat.name = this.catNameFormElem.value.toLowerCase();
+                        model.currentCat.sprite = this.catURLFormElem.value;
+                        model.currentCat.counter = this.catClicks.value;
+                        model.currentCat.catLinkID = model.currentCat.name + 'Link';
                         catListView.renderList();
-                        // update cat title
-                        catProfileView.catTitle.textContent = 'Meet ' + cat.title;
-                        // update cat image and image id.
-                        // catProfileView.renderImage();
-                        catProfileView.catImage.id = cat.imageID;
-                        catProfileView.catImage.src = cat.sprite;
-                        //update counter and counter id
-                        catProfileView.catCounter.id = cat.counterId;
-                        document.getElementById(cat.counterId).textContent = "Clicks: " + cat.counter;
-                        // update admin buttons and their ids.
-                        this.saveBtn.id = cat.saveBtnId;
-                        this.catAdminBtn.id = cat.catBtnId;
+                        catProfileView.render(model.currentCat);
                         this.hideCatForm();
-                    }
-                }
+
                 e.preventDefault();
             },
 
