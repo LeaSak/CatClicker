@@ -67,6 +67,50 @@
         text-align: center;
     }
 
+    /*https://www.taniarascia.com/styling-ui-components-from-scratch-buttons-forms/*/
+    button {
+        /*display: inline-block;*/
+        background: #1E6BD6;
+        border: 1px solid #1E6BD6;
+        color: white;
+        font-size: 14px;
+        padding: 5px;
+        text-decoration: none;
+        vertical-align: middle;
+        white-space: nowrap;
+        cursor: pointer;
+        line-height: 1;
+        margin: 1rem 1rem 1rem 0;
+    }
+
+    form,
+    input {
+        display: block;
+        padding: .5rem;
+        background: transparent;
+        vertical-align: middle;
+        width: 50%;
+        max-width: 100%;
+        border: 1px solid #cdcdcd;
+        border-radius: 4px;
+        font-size: .95rem;
+
+    }
+
+    input{
+        width: 100%;
+    }
+
+    label {
+        display: block;
+        margin: .5rem 0;
+    }
+
+    #cat-form,
+    #cat-btn{
+        display: none;
+    }
+
     @media only screen and (min-width: 800px) {
         /*.col {
             width: 50%;
@@ -89,6 +133,24 @@
         </div>
         <div class="grid-row">
             <div class="col" id="cat-box">
+                <h2 class="title" id="cat-intro"></h2>
+                <img src="" class="cat" id="cat-image">
+                <p class="tally" id="cat-counter"></p>
+            </div>
+        </div>
+        <div class="grid-row">
+            <div class="col" id="admin-box">
+                <button name="button" id="cat-btn">Admin</button>
+                <form action="" id="cat-form">
+                    <label for="cat-name">Cat Name</label>
+                    <input type="text" id="cat-name" placeholder="Name of Cat">
+                    <label for="cat-url">URL</label>
+                    <input type="text" id="cat-url" placeholder="Image Source">
+                    <label for="total-clicks">Total Clicks</label>
+                    <input type="text" for="total-clicks" id="cat-clicks" placeholder="Total Clicks per Cat">
+                    <button type="button" id="save-btn">Save</button>
+                    <button type="button" id="cancel-btn">Cancel</button>
+                </form>
             </div>
         </div>
     </div>
