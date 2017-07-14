@@ -5,8 +5,6 @@ var Cat = function(name, sprite) {
     this.sprite = sprite;
     this.counter = 0;
     this.catLinkID = this.name + 'Link';
-    this.catBtnId = this.name + "Btn";
-    this.saveBtnId = this.name + "SaveBtn";
 };
 
 // Create cat objects
