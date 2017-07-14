@@ -1,3 +1,4 @@
+//"use strict";
 // Model
 var Cat = function(name, sprite) {
     this.name = name;
@@ -8,7 +9,7 @@ var Cat = function(name, sprite) {
     this.counterId = this.name + "Counter";
     this.catBtnId = this.name + "Btn";
     this.saveBtnId = this.name + "SaveBtn";
-}
+};
 
 // Create cat objects
 // Photo by Miguel Angel Ruíz Sánchez on Unsplash
@@ -19,6 +20,7 @@ var ginger = new Cat('ginger', 'images/ginger.jpg');
 /* ======= Model ======= */
 
 var model = {
+    //currentCat: null,
     cats: [fluffy, ginger]
 };
 
@@ -28,13 +30,17 @@ var octopus = {
     getCats: function() {
         return model.cats;
     },
-    getCurrentCat: function(cat){
-        return model.cats.indexOf(cat);
-    },
+    // getCurrentCat: function(){
+    //     return model.currentCat;
+    // },
+    // setCurrentCat: function(cat){
+    //     model.currentCat = cat;
+    // },
     capitalizeFirstLetter: function(cat) {
         var lowercaseString = cat.name.slice(1);
         var firstLetter = cat.name.charAt(0).toUpperCase();
-        return cat.title = firstLetter + lowercaseString;
+        cat.title = firstLetter + lowercaseString;
+        return cat.title;
     },
     incrementCounter: function(cat) {
         cat.counter++;
@@ -44,7 +50,7 @@ var octopus = {
         catProfileView.init();
         catAdminView.init();
     }
-}
+};
 
 /* ======= Render ======= */
 //Render Cat Name
@@ -69,24 +75,26 @@ var catListView = {
                 catLink.textContent = cat.title;
                 catListElem.appendChild(catLink);
                 this.catLinks.appendChild(catListElem);
-            }, catListView)
+            }, catListView);
 
         },
 
         renderProfileOnClick: function() {
-            this.catLinks.addEventListener('click', this.showProfile.bind(this), false)
+            this.catLinks.addEventListener('click', this.showProfile.bind(this), false);
         },
-
         showProfile: function(e) {
             for (var i = 0; i < this.cats.length; i++) {
-                cat = this.cats[i];
+                var cat = this.cats[i];
                 if (cat.catLinkID === e.target.id) {
-                    catProfileView.renderTitle();
-                    catProfileView.renderImage();
-                    catProfileView.renderClicks();
-                    catAdminView.renderAdminButton();
+                    //octopus.setCurrentCat(cat);
+                    catProfileView.renderTitle(cat);
+                    catProfileView.renderImage(cat);
+                    catProfileView.renderClicks(cat);
+                    catAdminView.renderAdminButton(cat);
+                    //console.log(cat.name + " inside Loop ");
                 }
             }
+            //console.log(model.currentCat);
             catAdminView.hideCatForm();
             e.preventDefault();
             }
@@ -106,15 +114,15 @@ var catListView = {
              * Title, Image and Total Clicks
              */
 
-            renderTitle: function() {
+            renderTitle: function(cat) {
                 octopus.capitalizeFirstLetter(cat);
                 this.catTitle.textContent = 'Meet ' + cat.title;
             },
-            renderImage: function() {
+            renderImage: function(cat) {
                 this.catImage.id = cat.imageID;
                 this.catImage.src = cat.sprite;
             },
-            renderClicks: function() {
+            renderClicks: function(cat) {
                 this.catCounter.id = cat.counterId;
                 this.catCounter.textContent = "Clicks: " + cat.counter;
             },
@@ -130,7 +138,7 @@ var catListView = {
                         }
                     }
                     e.preventDefault();
-                })
+                });
             }
         };
 
@@ -149,7 +157,7 @@ var catListView = {
                 this.saveForm();
                 this.cancel();
             },
-            renderAdminButton: function(){
+            renderAdminButton: function(cat){
                 this.catAdminBtn.id = cat.catBtnId;
                 this.catAdminBtn.style.display= 'block';
             },
@@ -164,25 +172,52 @@ var catListView = {
                         this.catNameFormElem.value = cat.title;
                         this.catURLFormElem.value = cat.sprite;
                         this.catClicks.value = cat.counter;
+                        this.saveBtn.id = cat.saveBtnId;
                         this.catForm.style.display = 'block';
                     }
                 }
                 e.preventDefault();
             },
-            updateTitle: function(){
-                // get current cat
-                console.log(cat.name);
-                // cat.name = this.catNameFormElem.value.toLowerCase();
-                // cat.catLinkID = cat.name + 'Link';
-                // console.log(cat.name, cat.catLinkID);
-                // catProfileView.renderTitle();
+            updateProfile: function(e){
+                for (var i = 0; i < catListView.cats.length; i++){
+                    var cat = catListView.cats[i];
+                    if(cat.saveBtnId === e.target.id){
+                        //get form values
+                        cat.name = this.catNameFormElem.value.toLowerCase();
+                        cat.sprite = this.catURLFormElem.value;
+                        cat.counter = this.catClicks.value;
+                        // redefine cat properties
+                        cat.catLinkID = cat.name + 'Link';
+                        cat.imageID = cat.name + 'Image';
+                        cat.counterId = cat.name + "Counter";
+                        cat.catBtnId = cat.name + "Btn";
+                        cat.saveBtnId = cat.name + "SaveBtn";
+                        // update cat links
+                        catListView.renderList();
+                        // update cat title
+                        catProfileView.catTitle.textContent = 'Meet ' + cat.title;
+                        // update cat image and image id.
+                        // catProfileView.renderImage();
+                        catProfileView.catImage.id = cat.imageID;
+                        catProfileView.catImage.src = cat.sprite;
+                        //update counter and counter id
+                        catProfileView.catCounter.id = cat.counterId;
+                        document.getElementById(cat.counterId).textContent = "Clicks: " + cat.counter;
+                        // update admin buttons and their ids.
+                        this.saveBtn.id = cat.saveBtnId;
+                        this.catAdminBtn.id = cat.catBtnId;
+                        this.hideCatForm();
+                    }
+                }
+                e.preventDefault();
             },
+
             // Form Event Listeners
             renderCatFormOnClick: function(){
                 this.catAdminBtn.addEventListener('click', this.showCatForm.bind(this), false);
             },
             saveForm: function(){
-                this.saveBtn.addEventListener('click', this.updateTitle.bind(this), false);
+                this.saveBtn.addEventListener('click', this.updateProfile.bind(this), false);
             },
             cancel: function(){
                 this.cancelBtn.addEventListener('click', this.hideCatForm.bind(this), false);
